@@ -34,3 +34,13 @@ Status add_to_end(List_ptr list, int value)
     list->count++;
     return Success;
 }
+
+void display(List_ptr list)
+{
+    Node_ptr p_walker = list->head;
+    while (p_walker != NULL)
+    {
+        printf("%d\n", p_walker->value);
+        p_walker = p_walker->next;
+    }
+}
