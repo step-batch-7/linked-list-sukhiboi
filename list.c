@@ -76,6 +76,15 @@ Status insert_at(List_ptr list, int value, int position)
     return Failure;
 }
 
+Status remove_from_start(List_ptr list)
+{
+    Node_ptr to_be_removed = list->head;
+    list->head = list->head->next;
+    free(to_be_removed);
+    list->count--;
+    return Success;
+}
+
 void display(List_ptr list)
 {
     Node_ptr p_walker = list->head;
