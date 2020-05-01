@@ -85,6 +85,40 @@ Status remove_from_start(List_ptr list)
     return Success;
 }
 
+Status clear_list(List_ptr list)
+{
+    Node_ptr previous_node, p_walker = list->head;
+    while (p_walker != NULL)
+    {
+        previous_node = p_walker;
+        p_walker = p_walker->next;
+        free(previous_node);
+    }
+    list->head = NULL;
+    list->last = NULL;
+    list->count = 0;
+    return Success;
+}
+
+Status remove_from_end(List_ptr list)
+{
+    if (list->head == list->last)
+    {
+        return clear_list(list);
+    }
+    Node_ptr previous_node, p_walker = list->head;
+    while (p_walker->next != NULL)
+    {
+        previous_node = p_walker;
+        p_walker = p_walker->next;
+    }
+    free(p_walker);
+    previous_node->next = NULL;
+    list->last = previous_node;
+    list->count--;
+    return Success;
+}
+
 void display(List_ptr list)
 {
     Node_ptr p_walker = list->head;
