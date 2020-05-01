@@ -76,17 +76,24 @@ Status insert_at(List_ptr list, int value, int position)
     return Failure;
 }
 
-Status add_unique(List_ptr list, int value)
+Status is_number_available(List_ptr list, int number)
 {
     Node_ptr p_walker = list->head;
     while (p_walker != NULL)
     {
-        if (p_walker->value == value)
+        if (p_walker->value == number)
         {
-            return Failure;
+            return Success;
         }
         p_walker = p_walker->next;
     }
+    return Failure;
+}
+
+Status add_unique(List_ptr list, int value)
+{
+    if (is_number_available(list, value))
+        return Failure;
     return add_to_end(list, value);
 }
 

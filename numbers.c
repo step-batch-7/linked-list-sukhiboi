@@ -8,6 +8,8 @@
 #define DONE printf("Done\n\n");
 #define POS_NOT_FOUND printf("Position not found\n\n");
 #define NOT_UNIQUE printf("Given value is not added because it's not unique\n\n");
+#define NUMBER_EXISTS printf("Yes, given number exists in the list\n\n");
+#define NUMBER_NOT_EXISTS printf("No, given number does not exists in the list\n\n");
 
 void print_menu(void);
 char get_command(void);
@@ -96,8 +98,9 @@ void execute_command(char command, List_ptr list)
     DONE;
     break;
   case 'k':
-    printf("Not available yet\n\n");
-    break;
+    result = is_number_available(list, get_value(ASK_VALUE));
+    if (result == Success)
+      NUMBER_EXISTS else NUMBER_NOT_EXISTS break;
   case 'l':
     display(list);
     NEW_LINE;
