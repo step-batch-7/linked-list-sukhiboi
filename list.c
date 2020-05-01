@@ -100,6 +100,12 @@ Status clear_list(List_ptr list)
     return Success;
 }
 
+void destroy_list(List_ptr list)
+{
+    clear_list(list);
+    free(list);
+}
+
 Status remove_from_end(List_ptr list)
 {
     if (list->head == list->last)
