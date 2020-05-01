@@ -76,11 +76,54 @@ Status insert_at(List_ptr list, int value, int position)
     return Failure;
 }
 
+Status add_unique(List_ptr list, int value)
+{
+    Node_ptr p_walker = list->head;
+    while (p_walker != NULL)
+    {
+        if (p_walker->value == value)
+        {
+            return Failure;
+        }
+        p_walker = p_walker->next;
+    }
+    return add_to_end(list, value);
+}
+
+void display(List_ptr list)
+{
+    Node_ptr p_walker = list->head;
+    while (p_walker != NULL)
+    {
+        printf("%d\n", p_walker->value);
+        p_walker = p_walker->next;
+    }
+}
+
 Status remove_from_start(List_ptr list)
 {
     Node_ptr to_be_removed = list->head;
     list->head = list->head->next;
     free(to_be_removed);
+    list->count--;
+    return Success;
+}
+
+Status remove_from_end(List_ptr list)
+{
+    if (list->head == list->last)
+    {
+        return clear_list(list);
+    }
+    Node_ptr previous_node, p_walker = list->head;
+    while (p_walker->next != NULL)
+    {
+        previous_node = p_walker;
+        p_walker = p_walker->next;
+    }
+    free(p_walker);
+    previous_node->next = NULL;
+    list->last = previous_node;
     list->count--;
     return Success;
 }
@@ -104,33 +147,4 @@ void destroy_list(List_ptr list)
 {
     clear_list(list);
     free(list);
-}
-
-Status remove_from_end(List_ptr list)
-{
-    if (list->head == list->last)
-    {
-        return clear_list(list);
-    }
-    Node_ptr previous_node, p_walker = list->head;
-    while (p_walker->next != NULL)
-    {
-        previous_node = p_walker;
-        p_walker = p_walker->next;
-    }
-    free(p_walker);
-    previous_node->next = NULL;
-    list->last = previous_node;
-    list->count--;
-    return Success;
-}
-
-void display(List_ptr list)
-{
-    Node_ptr p_walker = list->head;
-    while (p_walker != NULL)
-    {
-        printf("%d\n", p_walker->value);
-        p_walker = p_walker->next;
-    }
 }
