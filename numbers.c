@@ -85,8 +85,9 @@ void execute_command(char command, List_ptr list)
     DONE;
     break;
   case 'g':
-    printf("Not available yet\n\n");
-    break;
+    result = remove_at(list, get_value(ASK_POS));
+    if (result == Success)
+      DONE else POS_NOT_FOUND break;
   case 'h':
     printf("Not available yet\n\n");
     break;
