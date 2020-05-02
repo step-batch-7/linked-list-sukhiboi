@@ -122,10 +122,6 @@ Status remove_at(List_ptr list, int position)
     {
         return remove_from_start(list);
     }
-    if (list->head == list->last)
-    {
-        return clear_list(list);
-    }
     int pos = 0;
     Node_ptr previous_node, p_walker = list->head;
     while (p_walker != NULL)
@@ -195,9 +191,9 @@ Status clear_list(List_ptr list)
         p_walker = p_walker->next;
         free(previous_node);
     }
+    list->count = 0;
     list->head = NULL;
     list->last = NULL;
-    list->count = 0;
     return Success;
 }
 
