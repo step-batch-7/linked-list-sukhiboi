@@ -149,6 +149,27 @@ Status remove_from_end(List_ptr list)
     return remove_at(list, list->count - 1);
 }
 
+Status remove_first_occurrence(List_ptr list, int value)
+{
+    int position = get_position(list, value);
+    if (position == -1)
+        return Failure;
+    return remove_at(list, position);
+}
+
+Status remove_all_occurrences(List_ptr list, int value)
+{
+    int position = get_position(list, value);
+    if (position == -1)
+        return Failure;
+    while (position != -1)
+    {
+        remove_at(list, position);
+        position = get_position(list, value);
+    }
+    return Success;
+}
+
 int get_position(List_ptr list, int value)
 {
     int pos = 0;
