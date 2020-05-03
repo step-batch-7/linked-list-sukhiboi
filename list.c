@@ -19,6 +19,34 @@ List_ptr create_list(void)
     return list;
 }
 
+int get_position(List_ptr list, int value)
+{
+    Node_ptr p_walker = list->head;
+    for (int i = 0; i < list->count; i++)
+    {
+        if (p_walker->value == value)
+        {
+            return i;
+        }
+        p_walker = p_walker->next;
+    }
+    return -1;
+}
+
+Status is_number_available(List_ptr list, int number)
+{
+    Node_ptr p_walker = list->head;
+    for (int i = 0; i < list->count; i++)
+    {
+        if (p_walker->value == number)
+        {
+            return Success;
+        }
+        p_walker = p_walker->next;
+    }
+    return Failure;
+}
+
 Status add_to_end(List_ptr list, int value)
 {
     Node_ptr new_node = create_node(value);
@@ -37,52 +65,31 @@ Status add_to_end(List_ptr list, int value)
 
 Status add_to_start(List_ptr list, int value)
 {
-    Node_ptr new_node = create_node(value);
     if (list->head == NULL)
     {
-        list->head = new_node;
-        list->last = new_node;
+        return add_to_end(list, value);
     }
-    else
-    {
-        new_node->next = list->head;
-        list->head = new_node;
-    }
+    Node_ptr new_node = create_node(value);
+    new_node->next = list->head;
+    list->head = new_node;
     list->count++;
     return Success;
 }
 
 Status insert_at(List_ptr list, int value, int position)
 {
-    int idx = 0;
-    if (position == 0)
+    if (position == 0 && list->head != NULL)
     {
         return add_to_start(list, value);
     }
-    Node_ptr previous_node, p_walker = list->head, new_node = create_node(value);
-    while (p_walker != NULL)
+    Node_ptr p_walker = list->head, new_node = create_node(value);
+    for (int i = 0; i < list->count - 1; i++)
     {
-        if (idx == position)
+        if (i == position - 1)
         {
-            previous_node->next = new_node;
-            new_node->next = p_walker;
+            new_node->next = p_walker->next;
+            p_walker->next = new_node;
             list->count++;
-            return Success;
-        }
-        previous_node = p_walker;
-        p_walker = p_walker->next;
-        idx++;
-    }
-    return Failure;
-}
-
-Status is_number_available(List_ptr list, int number)
-{
-    Node_ptr p_walker = list->head;
-    while (p_walker != NULL)
-    {
-        if (p_walker->value == number)
-        {
             return Success;
         }
         p_walker = p_walker->next;
@@ -109,6 +116,10 @@ void display(List_ptr list)
 
 Status remove_from_start(List_ptr list)
 {
+    if (list->head == NULL)
+    {
+        return Failure;
+    }
     Node_ptr to_be_removed = list->head;
     list->head = list->head->next;
     free(to_be_removed);
@@ -122,20 +133,18 @@ Status remove_at(List_ptr list, int position)
     {
         return remove_from_start(list);
     }
-    int pos = 0;
-    Node_ptr previous_node, p_walker = list->head;
-    while (p_walker != NULL)
+    Node_ptr p_walker = list->head;
+    for (int i = 0; i < list->count - 1; i++)
     {
-        if (pos == position)
+        if (i == position - 1)
         {
-            previous_node->next = p_walker->next;
-            free(p_walker);
+            Node_ptr to_be_removed = p_walker->next;
+            p_walker->next = p_walker->next->next;
+            free(to_be_removed);
             list->count--;
             return Success;
         }
-        previous_node = p_walker;
         p_walker = p_walker->next;
-        pos++;
     }
     return Failure;
 }
@@ -164,22 +173,6 @@ Status remove_all_occurrences(List_ptr list, int value)
         position = get_position(list, value);
     }
     return Success;
-}
-
-int get_position(List_ptr list, int value)
-{
-    int pos = 0;
-    Node_ptr p_walker = list->head;
-    while (p_walker != NULL)
-    {
-        if (p_walker->value == value)
-        {
-            return pos;
-        }
-        pos++;
-        p_walker = p_walker->next;
-    }
-    return -1;
 }
 
 Status clear_list(List_ptr list)

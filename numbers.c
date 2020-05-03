@@ -5,11 +5,26 @@
 #define ASK_VALUE "Enter a value"
 #define ASK_POS "Enter a position"
 
-#define DONE printf("Done\n\n");
-#define POS_NOT_FOUND printf("Position not found\n\n");
-#define NOT_UNIQUE printf("Given value is not added because it's not unique\n\n");
-#define NUMBER_EXISTS printf("Given number exists in the list\n\n");
-#define NUMBER_NOT_EXISTS printf("Given number does not exists in the list\n\n");
+void done(void)
+{
+  printf("Done\n\n");
+}
+void pos_not_found(void)
+{
+  printf("Position not found\n\n");
+}
+void not_unique(void)
+{
+  printf("Given value is not added because it's not unique\n\n");
+}
+void number_exists(void)
+{
+  printf("Given number exists in the list\n\n");
+}
+void number_not_exists(void)
+{
+  printf("Given number does not exists in the list\n\n");
+}
 
 void print_menu(void);
 char get_command(void);
@@ -62,52 +77,75 @@ void execute_command(char command, List_ptr list)
   {
   case 'a':
     result = add_to_end(list, get_value(ASK_VALUE));
-    DONE;
+    done();
     break;
   case 'b':
     result = add_to_start(list, get_value(ASK_VALUE));
-    DONE;
+    done();
     break;
   case 'c':
     result = insert_at(list, get_value(ASK_VALUE), get_value(ASK_POS));
     if (result == Success)
-      DONE else POS_NOT_FOUND break;
+      done();
+    else
+      pos_not_found();
+    break;
   case 'd':
     result = add_unique(list, get_value(ASK_VALUE));
     if (result == Success)
-      DONE else NOT_UNIQUE break;
+      done();
+    else
+      not_unique();
+    break;
   case 'e':
     result = remove_from_start(list);
-    DONE;
+    if (result == Success)
+      done();
+    else
+      pos_not_found();
     break;
   case 'f':
     result = remove_from_end(list);
-    DONE;
+    if (result == Success)
+      done();
+    else
+      pos_not_found();
     break;
   case 'g':
     result = remove_at(list, get_value(ASK_POS));
     if (result == Success)
-      DONE else POS_NOT_FOUND break;
+      done();
+    else
+      pos_not_found();
+    break;
   case 'h':
     result = remove_first_occurrence(list, get_value(ASK_VALUE));
     if (result == Success)
-      DONE else NUMBER_NOT_EXISTS break;
+      done();
+    else
+      number_not_exists();
+    break;
   case 'i':
     result = remove_all_occurrences(list, get_value(ASK_VALUE));
     if (result == Success)
-      DONE else NUMBER_NOT_EXISTS break;
+      done();
+    else
+      number_not_exists();
+    break;
   case 'j':
     result = clear_list(list);
-    DONE;
+    done();
     break;
   case 'k':
     result = is_number_available(list, get_value(ASK_VALUE));
     if (result == Success)
-      NUMBER_EXISTS else NUMBER_NOT_EXISTS break;
+      number_exists();
+    else
+      number_not_exists();
+    break;
   case 'l':
     display(list);
     NEW_LINE;
-    DONE;
     break;
   default:
     printf("Please enter a valid command\n\n");
@@ -124,6 +162,7 @@ int main(void)
     execute_command(command, list);
     command = get_command();
   }
+  destroy_list(list);
   printf("Program exited");
   return 0;
 }
