@@ -78,7 +78,11 @@ Status add_to_start(List_ptr list, int value)
 
 Status insert_at(List_ptr list, int value, int position)
 {
-    if (position == 0 && list->head != NULL)
+    if (list->head == NULL)
+    {
+        return Failure;
+    }
+    if (position == 0)
     {
         return add_to_start(list, value);
     }
