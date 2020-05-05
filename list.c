@@ -144,6 +144,10 @@ Status remove_at(List_ptr list, int position)
         {
             Node_ptr to_be_removed = p_walker->next;
             p_walker->next = p_walker->next->next;
+            if (p_walker->next == NULL)
+            {
+                list->last = p_walker;
+            }
             free(to_be_removed);
             list->count--;
             return Success;
