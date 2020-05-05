@@ -47,6 +47,20 @@ Status is_number_available(List_ptr list, int number)
     return Failure;
 }
 
+Node_ptr get_node(List_ptr list, int position)
+{
+    Node_ptr p_walker = list->head;
+    for (int i = 0; i < list->count; i++)
+    {
+        if (i == position)
+        {
+            return p_walker;
+        }
+        p_walker = p_walker->next;
+    }
+    return NULL;
+}
+
 Status add_to_end(List_ptr list, int value)
 {
     Node_ptr new_node = create_node(value);
@@ -78,27 +92,21 @@ Status add_to_start(List_ptr list, int value)
 
 Status insert_at(List_ptr list, int value, int position)
 {
-    if (list->head == NULL)
-    {
-        return Failure;
-    }
     if (position == 0)
     {
         return add_to_start(list, value);
     }
-    Node_ptr p_walker = list->head, new_node = create_node(value);
-    for (int i = 0; i < list->count - 1; i++)
+    Node_ptr node = get_node(list, position);
+    if (node == NULL)
     {
-        if (i == position - 1)
-        {
-            new_node->next = p_walker->next;
-            p_walker->next = new_node;
-            list->count++;
-            return Success;
-        }
-        p_walker = p_walker->next;
+        return Failure;
     }
-    return Failure;
+    Node_ptr previous_node = get_node(list, position - 1);
+    Node_ptr new_node = create_node(value);
+    new_node->next = previous_node->next;
+    previous_node->next = new_node;
+    list->count++;
+    return Success;
 }
 
 Status add_unique(List_ptr list, int value)
@@ -137,40 +145,22 @@ Status remove_at(List_ptr list, int position)
     {
         return remove_from_start(list);
     }
-    if (position == list->count - 1)
+    Node_ptr node = get_node(list, position);
+    if (node == NULL)
     {
-        return remove_from_end(list);
+        return Failure;
     }
-    Node_ptr p_walker = list->head;
-    for (int i = 0; i < list->count - 1; i++)
-    {
-        if (i == position - 1)
-        {
-            Node_ptr to_be_removed = p_walker->next;
-            p_walker->next = p_walker->next->next;
-            free(to_be_removed);
-            list->count--;
-            return Success;
-        }
-        p_walker = p_walker->next;
-    }
-    return Failure;
+    Node_ptr previous_node = get_node(list, position - 1);
+    Node_ptr to_be_removed = previous_node->next;
+    previous_node->next = previous_node->next->next;
+    free(to_be_removed);
+    list->count--;
+    return Success;
 }
 
 Status remove_from_end(List_ptr list)
 {
-    Node_ptr p_walker = list->head;
-    for (int i = 0; i < list->count - 2; i++)
-    {
-        p_walker = p_walker->next;
-    }
-    printf("%d\n", p_walker->value);
-    Node_ptr to_be_removed = p_walker->next;
-    list->last = p_walker;
-    list->last->next = NULL;
-    free(to_be_removed);
-    list->count--;
-    return Success;
+    return remove_at(list, list->count - 1);
 }
 
 Status remove_first_occurrence(List_ptr list, int value)

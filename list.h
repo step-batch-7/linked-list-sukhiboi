@@ -43,6 +43,7 @@ Status remove_all_occurrences(List_ptr, int value);
 
 Status is_number_available(List_ptr, int);
 int get_position(List_ptr list, int value);
+Node_ptr get_node(List_ptr list, int position);
 
 Status clear_list(List_ptr); // Removes all elements in the list
 
