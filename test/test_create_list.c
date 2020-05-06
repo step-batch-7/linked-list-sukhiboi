@@ -10,13 +10,13 @@ void test_is_count_zero(List_ptr list)
 
 void test_is_head_null(List_ptr list)
 {
-    int test_result = ptr_assert(list->head, 0);
+    int test_result = ptr_assert(list->head, NULL);
     print_result(test_result, "Head is null");
 }
 
 void test_is_last_null(List_ptr list)
 {
-    int test_result = ptr_assert(list->last, 0);
+    int test_result = ptr_assert(list->last, NULL);
     print_result(test_result, "Last is null");
 }
 
