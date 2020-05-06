@@ -92,6 +92,10 @@ Status add_to_start(List_ptr list, int value)
 
 Status insert_at(List_ptr list, int value, int position)
 {
+    if (position == list->count)
+    {
+        return add_to_end(list, value);
+    }
     Node_ptr node = get_node(list, position);
     if (node == NULL)
     {
@@ -128,7 +132,8 @@ void display(List_ptr list)
 
 Status remove_from_start(List_ptr list)
 {
-    if(list->head == NULL){
+    if (list->head == NULL)
+    {
         return Failure;
     }
     Node_ptr to_be_removed = list->head;
