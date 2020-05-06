@@ -4,9 +4,9 @@
 
 void test_create_list(void)
 {
-    printf("Testing create_list\n");
+    printf("\nTesting create_list\n");
     List_ptr list = create_list();
-    assert(list->count, 0, "Count is 0");
-    ptr_assert(list->head, NULL, "Head is null");
-    ptr_assert(list->last, NULL, "Last is null");
+    assert(list->count, 0, "Count should be 0");
+    ptr_assert(list->head, NULL, "Head should be NULL");
+    ptr_assert(list->last, NULL, "Last should be NULL");
 }
