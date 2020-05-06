@@ -92,14 +92,14 @@ Status add_to_start(List_ptr list, int value)
 
 Status insert_at(List_ptr list, int value, int position)
 {
-    if (position == 0)
-    {
-        return add_to_start(list, value);
-    }
     Node_ptr node = get_node(list, position);
     if (node == NULL)
     {
         return Failure;
+    }
+    if (position == 0)
+    {
+        return add_to_start(list, value);
     }
     Node_ptr previous_node = get_node(list, position - 1);
     Node_ptr new_node = create_node(value);
@@ -128,12 +128,15 @@ void display(List_ptr list)
 
 Status remove_from_start(List_ptr list)
 {
-    if (list->head == NULL)
-    {
+    if(list->head == NULL){
         return Failure;
     }
     Node_ptr to_be_removed = list->head;
     list->head = list->head->next;
+    if (list->head == NULL)
+    {
+        list->last = NULL;
+    }
     free(to_be_removed);
     list->count--;
     return Success;
@@ -141,19 +144,22 @@ Status remove_from_start(List_ptr list)
 
 Status remove_at(List_ptr list, int position)
 {
-    if (position == 0)
-    {
-        return remove_from_start(list);
-    }
     Node_ptr node = get_node(list, position);
     if (node == NULL)
     {
         return Failure;
     }
+    if (position == 0)
+    {
+        return remove_from_start(list);
+    }
     Node_ptr previous_node = get_node(list, position - 1);
-    Node_ptr to_be_removed = previous_node->next;
     previous_node->next = previous_node->next->next;
-    free(to_be_removed);
+    if (previous_node->next == NULL)
+    {
+        list->last = previous_node;
+    }
+    free(node);
     list->count--;
     return Success;
 }
